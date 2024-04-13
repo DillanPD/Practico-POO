@@ -1,59 +1,90 @@
-class Event:
-    def __init__(self, date, description):
-        self.date = date
-        self.description = description
+class Evento:
+    def __init__(self, fecha, descripcion):
+        self.fecha = fecha
+        self.descripcion = descripcion
 
     def __str__(self):
-        return f"Evento: {self.description}, Fecha: {self.date}"
-
-class Exam(Event):
-    def __init__(self, date, description, subject):
-        super().__init__(date, description)
-        self.subject = subject
-
-    def __str__(self):
-        return f"Examen: {self.description}, Fecha: {self.date}, Asignatura: {self.subject}"
-
-class PracticalWork(Event):
-    def __init__(self, date, description, subject):
-        super().__init__(date, description)
-        self.subject = subject
+        return f'Fecha: {self.fecha}, Descripción: {self.descripcion}'
+    
+class Examen(Evento):
+    def __init__(self, fecha, descripcion, materia):
+        super().__init__(fecha, descripcion)
+        self.materia = materia
 
     def __str__(self):
-        return f"Trabajo Práctico: {self.description}, Fecha: {self.date}, Asignatura: {self.subject}"
+        return f'{super().__str__()}, Materia: {self.materia}'
 
-class StudyGroup(Event):
-    def __init__(self, date, description, subject):
-        super().__init__(date, description)
-        self.subject = subject
+class TrabajoPractico(Evento):
+    def __init__(self, fecha, descripcion, materia, entrega):
+        super().__init__(fecha, descripcion)
+        self.materia = materia
+        self.entrega = entrega
 
     def __str__(self):
-        return f"Reunión de Estudio: {self.description}, Fecha: {self.date}, Asignatura: {self.subject}"
+        return f'{super().__str__()}, Materia: {self.materia}, Entrega: {self.entrega}'
 
+class ReunionEstudio(Evento):
+    def __init__(self, fecha, descripcion, lugar):
+        super().__init__(fecha, descripcion)
+        self.lugar = lugar
+
+    def __str__(self):
+        return f'{super().__str__()}, Lugar: {self.lugar}'
+    
 class Agenda:
     def __init__(self):
-        self.events = []
+        self.eventos = []
 
-    def add_event(self, event):
-        self.events.append(event)
+    def agregar_evento(self, evento):
+        self.eventos.append(evento)
 
-    def show_events(self):
-        for event in self.events:
-            print(event)
+    def mostrar_eventos(self):
+        for evento in self.eventos:
+            print(evento)
 
-class User:
-    def __init__(self, name):
-        self.name = name
-        self.agenda = Agenda()
+    def eliminar_evento(self, descripcion):
+        self.eventos = [evento for evento in self.eventos if evento.descripcion != descripcion]
 
-    def add_event(self, event):
-        self.agenda.add_event(event)
 
-    def show_agenda(self):
-        self.agenda.show_events()
+def mostrar_menu():
+    print('1. Agregar evento')
+    print('2. Eliminar evento')
+    print('3. Mostrar eventos')
+    print('4. Salir')
 
-# Ejemplo de uso
-user = User("Juan")
-user.add_event(Exam("2023-03-15", "Examen de Matemáticas", "Matemáticas"))
-user.add_event(PracticalWork("2023-03-20", "Trabajo Práctico de Programación", "Programación"))
-user.show_agenda()
+def agregar_evento():
+    fecha = input('Ingrese la fecha del evento: ')
+    descripcion = input('Ingrese la descripción del evento: ')
+    materia = input('Ingrese la materia del evento (si aplica): ')
+    entrega = input('Ingrese la fecha de entrega del evento (si aplica): ')
+    lugar = input('Ingrese el lugar del evento (si aplica): ')
+
+    evento = Examen(fecha, descripcion, materia) if materia else TrabajoPractico(fecha, descripcion, materia, entrega) if entrega else ReunionEstudio(fecha, descripcion, lugar)
+
+    agenda.agregar_evento(evento)
+
+def eliminar_evento():
+    descripcion = input('Ingrese la descripción del evento a eliminar: ')
+    agenda.eliminar_evento(descripcion)
+
+def mostrar_eventos():
+    print('Eventos en la agenda:')
+    agenda.mostrar_eventos()
+
+if __name__ == '__main__':
+    agenda = Agenda()
+
+    while True:
+        mostrar_menu()
+        opcion = int(input('Seleccione una opción: '))
+
+        if opcion == 1:
+            agregar_evento()
+        elif opcion == 2:
+            eliminar_evento()
+        elif opcion == 3:
+            mostrar_eventos()
+        elif opcion == 4:
+            break
+        else:
+            print('Opción inválida. Intente nuevamente.')
