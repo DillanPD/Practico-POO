@@ -55,11 +55,9 @@ def mostrar_menu():
 def agregar_evento():
     fecha = input('Ingrese la fecha del evento: ')
     descripcion = input('Ingrese la descripción del evento: ')
-    materia = input('Ingrese la materia del evento (si aplica): ')
-    entrega = input('Ingrese la fecha de entrega del evento (si aplica): ')
-    lugar = input('Ingrese el lugar del evento (si aplica): ')
+    materia = input('Ingrese la materia del evento: ')
 
-    evento = Examen(fecha, descripcion, materia) if materia else TrabajoPractico(fecha, descripcion, materia, entrega) if entrega else ReunionEstudio(fecha, descripcion, lugar)
+    evento = Examen(fecha, descripcion, materia) if materia else TrabajoPractico(fecha, descripcion, materia) if materia else ReunionEstudio(fecha, descripcion)
 
     agenda.agregar_evento(evento)
 
